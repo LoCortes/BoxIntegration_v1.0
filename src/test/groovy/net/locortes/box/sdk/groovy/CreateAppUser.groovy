@@ -65,7 +65,7 @@ CreateUserParams params = new CreateUserParams()
 params.spaceAmount = 512 * 1024 * 1024 //512 MB
 
 def usersCount = 1
-def usersBaseName = 'ZBOX_Colombia_TIA_'
+def usersBaseName = '.'
 
 (1..usersCount).each {
     def name = "$usersBaseName$it"
