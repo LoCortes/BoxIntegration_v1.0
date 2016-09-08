@@ -19,7 +19,7 @@ import static org.abelsromero.box.sdk.helpers.FileHelpers.getFile
 def config = new ConfigSlurper().parse(getFile('config.groovy').toURI().toURL())
 
 // Params
-def key = 'zurichProdColombiaTIA'
+def key = '.'
 
 //The Client ID is the unique identifier of the application created
 final String CLIENT_ID = config."$key".clientId;
@@ -37,7 +37,7 @@ final String ENTERPRISE_ID = config."$key".enterpriseId;
 /*
     PREPARING THE ENCRYPTION PREFERENCES
  */
-println "Definint Encryption Preferences"
+println "Defining Encryption Preferences"
 JWTEncryptionPreferences encryptionPref = new JWTEncryptionPreferences();
 encryptionPref.setPublicKeyID(PUBLIC_KEY_ID);
 encryptionPref.setPrivateKey(new String(FileHelpers.getFile(PRIVATE_KEY_FILE).readBytes()));
@@ -47,7 +47,6 @@ encryptionPref.setEncryptionAlgorithm(EncryptionAlgorithm.RSA_SHA_256);
 //It is a best practice to use an access token cache to prevent unneeded requests to Box for access tokens.
 //For production applications it is recommended to use a distributed cache like Memcached or Redis, and to
 //implement IAccessTokenCache to store and retrieve access tokens appropriately for your environment.
-final int MAX_DEPTH = 1;
 final int MAX_CACHE_ENTRIES = 100;
 IAccessTokenCache accessTokenCache = new InMemoryLRUAccessTokenCache(MAX_CACHE_ENTRIES);
 
@@ -71,7 +70,7 @@ def usersBaseName = 'ZBOX_Colombia_TIA_'
 (1..usersCount).each {
     def name = "$usersBaseName$it"
     println "Creating user: $name"
-    BoxUser.Info user = BoxUser.createAppUser(api, name, params)
-    println "User created with name $name and id ${user.ID} and login: ${user.login}"
+    //BoxUser.Info user = BoxUser.createAppUser(api, name, params)
+    //println "User created with name $name and id ${user.ID} and login: ${user.login}"
     println "User created with name $name"
 }
