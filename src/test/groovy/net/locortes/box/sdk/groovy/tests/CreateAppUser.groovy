@@ -1,4 +1,4 @@
-package net.locortes.box.sdk.groovy
+package net.locortes.box.sdk.groovy.tests
 
 import com.box.sdk.BoxDeveloperEditionAPIConnection
 import com.box.sdk.BoxUser
@@ -19,7 +19,7 @@ import static org.abelsromero.box.sdk.helpers.FileHelpers.getFile
 def config = new ConfigSlurper().parse(getFile('config.groovy').toURI().toURL())
 
 // Params
-def key = '.'
+def key = 'APP_ID'
 
 //The Client ID is the unique identifier of the application created
 final String CLIENT_ID = config."$key".clientId;
@@ -64,13 +64,8 @@ BoxDeveloperEditionAPIConnection api =
 CreateUserParams params = new CreateUserParams()
 params.spaceAmount = 512 * 1024 * 1024 //512 MB
 
-def usersCount = 1
-def usersBaseName = '.'
-
-(1..usersCount).each {
-    def name = "$usersBaseName$it"
-    println "Creating user: $name"
-    //BoxUser.Info user = BoxUser.createAppUser(api, name, params)
-    //println "User created with name $name and id ${user.ID} and login: ${user.login}"
-    println "User created with name $name"
-}
+def name = "APP_USER_NAME"
+println "Creating user: $name"
+BoxUser.Info user = BoxUser.createAppUser(api, name, params)
+println "User created with name $name and id ${user.ID} and login: ${user.login}"
+println "User created with name $name"
