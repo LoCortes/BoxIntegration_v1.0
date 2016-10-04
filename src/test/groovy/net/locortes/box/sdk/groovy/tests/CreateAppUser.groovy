@@ -7,16 +7,14 @@ import com.box.sdk.EncryptionAlgorithm
 import com.box.sdk.IAccessTokenCache
 import com.box.sdk.InMemoryLRUAccessTokenCache
 import com.box.sdk.JWTEncryptionPreferences
-import org.abelsromero.box.sdk.helpers.FileHelpers
 
-import static org.abelsromero.box.sdk.helpers.FileHelpers.getFile
 
 /**
  * Created by Vicenç Cortés Olea on 07/09/2016.
  * Based on Abel Salgado Romero work (https://github.com/abelsromero/box-groovy-wrapper)
  */
 
-def config = new ConfigSlurper().parse(getFile('config.groovy').toURI().toURL())
+def config = new ConfigSlurper().parse(this.getClass().getClassLoader().getResource("config.groovy").toURI().toURL())
 
 // Params
 def key = 'APP_ID'
@@ -40,7 +38,9 @@ final String ENTERPRISE_ID = config."$key".enterpriseId;
 println "Defining Encryption Preferences"
 JWTEncryptionPreferences encryptionPref = new JWTEncryptionPreferences();
 encryptionPref.setPublicKeyID(PUBLIC_KEY_ID);
-encryptionPref.setPrivateKey(new String(FileHelpers.getFile(PRIVATE_KEY_FILE).readBytes()));
+
+File privateKeyFile = new File(this.getClass().getClassLoader().getResource(PRIVATE_KEY_FILE).toURI());
+encryptionPref.setPrivateKey(new String(privateKeyFile.readBytes()));
 encryptionPref.setPrivateKeyPassword(PRIVATE_KEY_PASSWORD);
 encryptionPref.setEncryptionAlgorithm(EncryptionAlgorithm.RSA_SHA_256);
 

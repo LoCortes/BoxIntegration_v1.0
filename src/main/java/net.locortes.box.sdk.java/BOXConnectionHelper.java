@@ -3,7 +3,7 @@ package net.locortes.box.sdk.java;
 import com.box.sdk.*;
 import groovy.util.ConfigObject;
 import groovy.util.ConfigSlurper;
-import org.abelsromero.box.sdk.helpers.FileHelpers;
+
 
 import java.io.*;
 
@@ -33,7 +33,7 @@ public class BOXConnectionHelper {
 
     public BOXConnectionHelper(){
         try {
-            ConfigObject config = new ConfigSlurper().parse(FileHelpers.getFile("config.groovy").toURI().toURL());
+            ConfigObject config = new ConfigSlurper().parse(this.getClass().getClassLoader().getResource("config.groovy").toURI().toURL());
 
             String configKey = "APP_ID";
             ConfigObject appConfig = (ConfigObject) config.get(configKey);
@@ -51,7 +51,9 @@ public class BOXConnectionHelper {
             System.out.println("Defining Encryption Preferences");
             JWTEncryptionPreferences encryptionPref = new JWTEncryptionPreferences();
             encryptionPref.setPublicKeyID(PUBLIC_KEY_ID);
-            encryptionPref.setPrivateKey(new String(readBytes(FileHelpers.getFile(PRIVATE_KEY_FILE))));
+
+            File privateKeyFile = new File(this.getClass().getClassLoader().getResource(PRIVATE_KEY_FILE).toURI());
+            encryptionPref.setPrivateKey(new String(readBytes(privateKeyFile)));
             encryptionPref.setPrivateKeyPassword(PRIVATE_KEY_PASSWORD);
             encryptionPref.setEncryptionAlgorithm(EncryptionAlgorithm.RSA_SHA_256);
 

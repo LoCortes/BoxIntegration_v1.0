@@ -1,10 +1,8 @@
 package net.locortes.box.sdk.java.tests;
 
 import com.box.sdk.*;
-import groovy.util.ConfigObject;
-import groovy.util.ConfigSlurper;
 import net.locortes.box.sdk.java.BOXConnectionHelper;
-import org.abelsromero.box.sdk.helpers.FileHelpers;
+
 
 import java.io.*;
 

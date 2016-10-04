@@ -1,17 +1,5 @@
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
 
-# Package Files #
-*.jar
-*.war
-*.ear
-
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
-
-# Others
-.gradle/
-build/
-/src/main/groovy/
+/.gradle/
+/.idea/
 /src/main/resources/
-.idea/
+/src/test/groovy/net/locortes/box/sdk/groovy/tests/applicationKeyID.groovy
