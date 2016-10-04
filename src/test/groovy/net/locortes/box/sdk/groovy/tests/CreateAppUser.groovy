@@ -7,17 +7,22 @@ import com.box.sdk.EncryptionAlgorithm
 import com.box.sdk.IAccessTokenCache
 import com.box.sdk.InMemoryLRUAccessTokenCache
 import com.box.sdk.JWTEncryptionPreferences
+import net.locortes.box.sdk.java.helper.ApplicationKeyID
+import net.locortes.box.sdk.java.helper.ResourcesHelper
 
 
 /**
  * Created by Vicenç Cortés Olea on 07/09/2016.
  * Based on Abel Salgado Romero work (https://github.com/abelsromero/box-groovy-wrapper)
  */
+def config = new ConfigSlurper().parse(ResourcesHelper.getURI("config.groovy").toURL())
 
-def config = new ConfigSlurper().parse(this.getClass().getClassLoader().getResource("config.groovy").toURI().toURL())
+//DEFINE HERE THE NAME OF THE APPLICATION USER TO BE CREATED
+def name = "ZBOX DEV Indonesia User"
 
-// Params
-def key = 'APP_ID'
+//Class that only contains a static method that returns the ID of the configuration to be used
+//The key only identifies which set or properties will be taken to connect to BOX.
+def key = ApplicationKeyID.getConfigKey()
 
 //The Client ID is the unique identifier of the application created
 final String CLIENT_ID = config."$key".clientId;
@@ -39,7 +44,7 @@ println "Defining Encryption Preferences"
 JWTEncryptionPreferences encryptionPref = new JWTEncryptionPreferences();
 encryptionPref.setPublicKeyID(PUBLIC_KEY_ID);
 
-File privateKeyFile = new File(this.getClass().getClassLoader().getResource(PRIVATE_KEY_FILE).toURI());
+File privateKeyFile = new File(ResourcesHelper.getURI(PRIVATE_KEY_FILE));
 encryptionPref.setPrivateKey(new String(privateKeyFile.readBytes()));
 encryptionPref.setPrivateKeyPassword(PRIVATE_KEY_PASSWORD);
 encryptionPref.setEncryptionAlgorithm(EncryptionAlgorithm.RSA_SHA_256);
@@ -64,8 +69,9 @@ BoxDeveloperEditionAPIConnection api =
 CreateUserParams params = new CreateUserParams()
 params.spaceAmount = 512 * 1024 * 1024 //512 MB
 
-def name = "APP_USER_NAME"
+println "="*30
 println "Creating user: $name"
 BoxUser.Info user = BoxUser.createAppUser(api, name, params)
 println "User created with name $name and id ${user.ID} and login: ${user.login}"
 println "User created with name $name"
+println "="*30

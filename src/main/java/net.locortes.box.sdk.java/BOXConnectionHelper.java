@@ -3,12 +3,16 @@ package net.locortes.box.sdk.java;
 import com.box.sdk.*;
 import groovy.util.ConfigObject;
 import groovy.util.ConfigSlurper;
+import net.locortes.box.sdk.java.helper.ApplicationKeyID;
+import net.locortes.box.sdk.java.helper.ResourcesHelper;
 
 
 import java.io.*;
 
 /**
  * Created by VICENC.CORTESOLEA on 08/09/2016.
+ *
+ * This class helps to perform a connection to BOX and performs some basic actions
  */
 public class BOXConnectionHelper {
 
@@ -33,9 +37,9 @@ public class BOXConnectionHelper {
 
     public BOXConnectionHelper(){
         try {
-            ConfigObject config = new ConfigSlurper().parse(this.getClass().getClassLoader().getResource("config.groovy").toURI().toURL());
+            ConfigObject config = new ConfigSlurper().parse(ResourcesHelper.getURI("config.groovy").toURL());
 
-            String configKey = "APP_ID";
+            String configKey = ApplicationKeyID.getConfigKey();
             ConfigObject appConfig = (ConfigObject) config.get(configKey);
 
             CLIENT_ID = (String) appConfig.get("clientId");
@@ -52,7 +56,7 @@ public class BOXConnectionHelper {
             JWTEncryptionPreferences encryptionPref = new JWTEncryptionPreferences();
             encryptionPref.setPublicKeyID(PUBLIC_KEY_ID);
 
-            File privateKeyFile = new File(this.getClass().getClassLoader().getResource(PRIVATE_KEY_FILE).toURI());
+            File privateKeyFile = new File(ResourcesHelper.getURI(PRIVATE_KEY_FILE));
             encryptionPref.setPrivateKey(new String(readBytes(privateKeyFile)));
             encryptionPref.setPrivateKeyPassword(PRIVATE_KEY_PASSWORD);
             encryptionPref.setEncryptionAlgorithm(EncryptionAlgorithm.RSA_SHA_256);
