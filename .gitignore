@@ -2,4 +2,5 @@
 /.gradle/
 /.idea/
 /src/main/resources/
-/src/test/groovy/net/locortes/box/sdk/groovy/tests/applicationKeyID.groovy
+/gradle.properties
+/src/main/java/net.locortes.box.sdk.java/helper/ApplicationKeyID.java
