@@ -5,8 +5,8 @@ package net.locortes.box.sdk.java.helper;
  */
 public class ApplicationKeyID {
 
-    private final String configKey = "zurichDevIndonesia";
+    private final static String configKey = "VALUE";
     public static String getConfigKey(){
-        return getConfigKey();
+        return configKey;
     }
 }
