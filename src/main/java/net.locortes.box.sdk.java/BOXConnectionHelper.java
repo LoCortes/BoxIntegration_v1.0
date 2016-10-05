@@ -11,6 +11,7 @@ import java.io.*;
 
 /**
  * Created by VICENC.CORTESOLEA on 08/09/2016.
+ * Based on Abel Salgado Romero work (https://github.com/abelsromero/box-groovy-wrapper)
  *
  * This class helps to perform a connection to BOX and performs some basic actions
  */
