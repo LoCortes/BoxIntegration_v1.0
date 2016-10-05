@@ -2,9 +2,7 @@ package net.locortes.box.sdk.java.tests;
 
 import com.box.sdk.*;
 import net.locortes.box.sdk.java.BOXConnectionHelper;
-
-
-import java.io.*;
+import net.locortes.box.sdk.java.helper.ApplicationKeyID;
 
 /**
  * Created by VICENC.CORTESOLEA on 08/09/2016.
@@ -34,8 +32,8 @@ public class CreateAppUser {
      * @param args
      */
     public void main(String[] args){
-        BOXConnectionHelper boxConnectionHelper = new BOXConnectionHelper();
-        BoxAPIConnection api = boxConnectionHelper.getConnection();
+        BOXConnectionHelper boxConnectionHelper = new BOXConnectionHelper(ApplicationKeyID.getConfigKey());
+        BoxAPIConnection api = boxConnectionHelper.getEnterpriseConnection();
 
         CreateAppUser create = new CreateAppUser();
         create.createUser(api, "APP_USER_NAME");

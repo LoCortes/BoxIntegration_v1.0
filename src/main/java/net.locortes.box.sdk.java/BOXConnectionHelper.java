@@ -28,6 +28,8 @@ public class BOXConnectionHelper {
     private String PRIVATE_KEY_PASSWORD;
     //The Enterprise ID is the unique ID for the BOX repository to where we are connecting.
     private String ENTERPRISE_ID;
+    //The APP User ID is the user used to login on the system through the API
+    private String APP_USER_ID;
 
     //Preferences for getting the BOX Connection
     JWTEncryptionPreferences encryptionPref;
@@ -35,25 +37,24 @@ public class BOXConnectionHelper {
     //Cache for the token
     IAccessTokenCache accessTokenCache;
 
-    public BOXConnectionHelper(){
+    public BOXConnectionHelper(String configKey){
         try {
             ConfigObject config = new ConfigSlurper().parse(ResourcesHelper.getURI("config.groovy").toURL());
-
-            String configKey = ApplicationKeyID.getConfigKey();
             ConfigObject appConfig = (ConfigObject) config.get(configKey);
 
             CLIENT_ID = (String) appConfig.get("clientId");
             CLIENT_SECRET = (String) appConfig.get("secret");
             PUBLIC_KEY_ID = (String) appConfig.get("keyId");
-            PRIVATE_KEY_FILE = (String) appConfig.get("pemPrivateKeyLocation");
-            PRIVATE_KEY_PASSWORD = (String) appConfig.get("pemPrivatekeyPass");
+            PRIVATE_KEY_FILE = (String) appConfig.get("keyLocation");
+            PRIVATE_KEY_PASSWORD = (String) appConfig.get("keyPass");
             ENTERPRISE_ID = (String) appConfig.get("enterpriseId");
+            APP_USER_ID = (String) appConfig.get("appUserId");
 
             /*
             PREPARING THE ENCRYPTION PREFERENCES
             */
             System.out.println("Defining Encryption Preferences");
-            JWTEncryptionPreferences encryptionPref = new JWTEncryptionPreferences();
+            encryptionPref = new JWTEncryptionPreferences();
             encryptionPref.setPublicKeyID(PUBLIC_KEY_ID);
 
             File privateKeyFile = new File(ResourcesHelper.getURI(PRIVATE_KEY_FILE));
@@ -65,7 +66,7 @@ public class BOXConnectionHelper {
             //For production applications it is recommended to use a distributed cache like Memcached or Redis, and to
             //implement IAccessTokenCache to store and retrieve access tokens appropriately for your environment.
             final int MAX_CACHE_ENTRIES = 100;
-            IAccessTokenCache accessTokenCache = new InMemoryLRUAccessTokenCache(MAX_CACHE_ENTRIES);
+            accessTokenCache = new InMemoryLRUAccessTokenCache(MAX_CACHE_ENTRIES);
 
         }catch(Exception e){
             e.printStackTrace();
@@ -74,9 +75,9 @@ public class BOXConnectionHelper {
 
     /**
      * Get the connection using the Information indicated on the constructor
-     * @return
+     * @return a connection to BOX using an enterprise ID
      */
-    public BoxAPIConnection getConnection(){
+    public BoxAPIConnection getEnterpriseConnection(){
         /*
         OBTAINING CONNECTION TO THE BOX REPOSITORY
         To make this work I needed to downloed the "Java Cryptography Extension (JCE) Unlimited Strength Jurisdiction Policy Files <jre_version>" and add the jars in the jvm
@@ -84,6 +85,21 @@ public class BOXConnectionHelper {
         System.out.println("Performing connection trough the JAVA API...");
         BoxDeveloperEditionAPIConnection api =
                 BoxDeveloperEditionAPIConnection.getAppEnterpriseConnection(ENTERPRISE_ID, CLIENT_ID, CLIENT_SECRET, encryptionPref, accessTokenCache);
+        return api;
+    }
+
+    /**
+     * Get the connection using the Information indicated on the constructor
+     * @return a connection to BOX using an APP User
+     */
+    public BoxAPIConnection getUserConnection(){
+        /*
+        OBTAINING CONNECTION TO THE BOX REPOSITORY
+        To make this work I needed to downloed the "Java Cryptography Extension (JCE) Unlimited Strength Jurisdiction Policy Files <jre_version>" and add the jars in the jvm
+        */
+        System.out.println("Performing connection trough the JAVA API...");
+        BoxDeveloperEditionAPIConnection api =
+                BoxDeveloperEditionAPIConnection.getAppUserConnection(APP_USER_ID, CLIENT_ID, CLIENT_SECRET, encryptionPref, accessTokenCache);
         return api;
     }
 

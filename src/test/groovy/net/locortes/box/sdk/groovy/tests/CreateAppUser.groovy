@@ -18,7 +18,7 @@ import net.locortes.box.sdk.java.helper.ResourcesHelper
 def config = new ConfigSlurper().parse(ResourcesHelper.getURI("config.groovy").toURL())
 
 //DEFINE HERE THE NAME OF THE APPLICATION USER TO BE CREATED
-def name = "ZBOX DEV Indonesia User"
+def name = "NAME_OF_THE_USER"
 
 //Class that only contains a static method that returns the ID of the configuration to be used
 //The key only identifies which set or properties will be taken to connect to BOX.
