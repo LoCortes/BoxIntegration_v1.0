@@ -48,7 +48,8 @@ BoxFile.Info fileInfo = folder.uploadFile([
         created : new Date() - 10,
         size    : new File(ResourcesHelper.getURI("Test Document 1.docx")).size(),
         listener: { numBytes, totalBytes ->
-            println "Uploading... ${formatter.format(numBytes / 1024)} KB out of: ${formatter.format(totalBytes / 1024)} KB (${formatter.format(numBytes/totalBytes*100)}%)"
+            println "Uploading... ${formatter.format(numBytes / 1024)} KB out of: " +
+                    "${formatter.format(totalBytes / 1024)} KB (${formatter.format(numBytes/totalBytes*100)}%)"
         } as ProgressListener,
 ] as FileUploadParams)
 

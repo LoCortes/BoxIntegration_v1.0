@@ -8,11 +8,12 @@ import net.locortes.box.sdk.java.helper.ResourcesHelper;
 
 
 import java.io.*;
+import java.net.URISyntaxException;
 
 /**
  * Created by VICENC.CORTESOLEA on 08/09/2016.
  * Based on Abel Salgado Romero work (https://github.com/abelsromero/box-groovy-wrapper)
- *
+ * <p>
  * This class helps to perform a connection to BOX and performs some basic actions
  */
 public class BOXConnectionHelper {
@@ -38,78 +39,90 @@ public class BOXConnectionHelper {
     //Cache for the token
     IAccessTokenCache accessTokenCache;
 
-    public BOXConnectionHelper(String configKey){
-        try {
-            ConfigObject config = new ConfigSlurper().parse(ResourcesHelper.getURI("config.groovy").toURL());
-            ConfigObject appConfig = (ConfigObject) config.get(configKey);
+    public BOXConnectionHelper(String configKey) throws URISyntaxException, IOException {
+        ConfigObject config = new ConfigSlurper().parse(ResourcesHelper.getURI("config.groovy").toURL());
+        ConfigObject appConfig = (ConfigObject) config.get(configKey);
 
-            CLIENT_ID = (String) appConfig.get("clientId");
-            CLIENT_SECRET = (String) appConfig.get("secret");
-            PUBLIC_KEY_ID = (String) appConfig.get("keyId");
-            PRIVATE_KEY_FILE = (String) appConfig.get("keyLocation");
-            PRIVATE_KEY_PASSWORD = (String) appConfig.get("keyPass");
-            ENTERPRISE_ID = (String) appConfig.get("enterpriseId");
-            APP_USER_ID = (String) appConfig.get("appUserId");
+        CLIENT_ID = (String) appConfig.get("clientId");
+        CLIENT_SECRET = (String) appConfig.get("secret");
+        PUBLIC_KEY_ID = (String) appConfig.get("keyId");
+        PRIVATE_KEY_FILE = (String) appConfig.get("keyLocation");
+        PRIVATE_KEY_PASSWORD = (String) appConfig.get("keyPass");
+        ENTERPRISE_ID = (String) appConfig.get("enterpriseId");
+        APP_USER_ID = (String) appConfig.get("appUserId");
 
             /*
             PREPARING THE ENCRYPTION PREFERENCES
             */
-            System.out.println("Defining Encryption Preferences");
-            encryptionPref = new JWTEncryptionPreferences();
-            encryptionPref.setPublicKeyID(PUBLIC_KEY_ID);
+        System.out.println("Defining Encryption Preferences");
+        encryptionPref = new JWTEncryptionPreferences();
+        encryptionPref.setPublicKeyID(PUBLIC_KEY_ID);
 
-            File privateKeyFile = new File(ResourcesHelper.getURI(PRIVATE_KEY_FILE));
-            encryptionPref.setPrivateKey(new String(readBytes(privateKeyFile)));
-            encryptionPref.setPrivateKeyPassword(PRIVATE_KEY_PASSWORD);
-            encryptionPref.setEncryptionAlgorithm(EncryptionAlgorithm.RSA_SHA_256);
+        File privateKeyFile = new File(ResourcesHelper.getURI(PRIVATE_KEY_FILE));
+        encryptionPref.setPrivateKey(new String(ResourcesHelper.readBytes(privateKeyFile)));
+        encryptionPref.setPrivateKeyPassword(PRIVATE_KEY_PASSWORD);
+        encryptionPref.setEncryptionAlgorithm(EncryptionAlgorithm.RSA_SHA_256);
 
-            //It is a best practice to use an access token cache to prevent unneeded requests to Box for access tokens.
-            //For production applications it is recommended to use a distributed cache like Memcached or Redis, and to
-            //implement IAccessTokenCache to store and retrieve access tokens appropriately for your environment.
-            final int MAX_CACHE_ENTRIES = 100;
-            accessTokenCache = new InMemoryLRUAccessTokenCache(MAX_CACHE_ENTRIES);
-
-        }catch(Exception e){
-            e.printStackTrace();
-        }
+        //It is a best practice to use an access token cache to prevent unneeded requests to Box for access tokens.
+        //For production applications it is recommended to use a distributed cache like Memcached or Redis, and to
+        //implement IAccessTokenCache to store and retrieve access tokens appropriately for your environment.
+        final int MAX_CACHE_ENTRIES = 100;
+        accessTokenCache = new InMemoryLRUAccessTokenCache(MAX_CACHE_ENTRIES);
     }
 
     /**
      * Get the connection using the Information indicated on the constructor
+     *
      * @return a connection to BOX using an enterprise ID
      */
-    public BoxAPIConnection getEnterpriseConnection(){
+    public BoxAPIConnection getEnterpriseConnection() {
         /*
         OBTAINING CONNECTION TO THE BOX REPOSITORY
-        To make this work I needed to downloed the "Java Cryptography Extension (JCE) Unlimited Strength Jurisdiction Policy Files <jre_version>" and add the jars in the jvm
+        To make this work I needed to downloed the "Java Cryptography Extension (JCE) Unlimited Strength Jurisdiction
+        Policy Files <jre_version>" and add the jars in the jvm
         */
         System.out.println("Performing connection trough the JAVA API...");
         BoxDeveloperEditionAPIConnection api =
-                BoxDeveloperEditionAPIConnection.getAppEnterpriseConnection(ENTERPRISE_ID, CLIENT_ID, CLIENT_SECRET, encryptionPref, accessTokenCache);
+                BoxDeveloperEditionAPIConnection.getAppEnterpriseConnection(
+                        ENTERPRISE_ID,
+                        CLIENT_ID,
+                        CLIENT_SECRET,
+                        encryptionPref,
+                        accessTokenCache
+                );
         return api;
     }
 
     /**
      * Get the connection using the Information indicated on the constructor
+     *
      * @return a connection to BOX using an APP User
      */
-    public BoxAPIConnection getUserConnection(){
+    public BoxAPIConnection getUserConnection() {
         /*
         OBTAINING CONNECTION TO THE BOX REPOSITORY
-        To make this work I needed to downloed the "Java Cryptography Extension (JCE) Unlimited Strength Jurisdiction Policy Files <jre_version>" and add the jars in the jvm
+        To make this work I needed to downloed the "Java Cryptography Extension (JCE) Unlimited Strength Jurisdiction
+        Policy Files <jre_version>" and add the jars in the jvm
         */
         System.out.println("Performing connection trough the JAVA API...");
         BoxDeveloperEditionAPIConnection api =
-                BoxDeveloperEditionAPIConnection.getAppUserConnection(APP_USER_ID, CLIENT_ID, CLIENT_SECRET, encryptionPref, accessTokenCache);
+                BoxDeveloperEditionAPIConnection.getAppUserConnection(
+                        APP_USER_ID,
+                        CLIENT_ID,
+                        CLIENT_SECRET,
+                        encryptionPref,
+                        accessTokenCache
+                );
         return api;
     }
 
     /**
      * Method to create a user
+     *
      * @param api
      * @param name
      */
-    public void createUser(BoxAPIConnection api, String name){
+    public void createUser(BoxAPIConnection api, String name) {
         /*
         DEFINING THE PARAMETERS THAT THE USERS WILL HAVE
         */
@@ -122,30 +135,4 @@ public class BOXConnectionHelper {
         System.out.println("User created with name " + name);
     }
 
-    /**
-     * Method to read bytes
-     * @param file
-     * @return
-     * @throws IOException
-     */
-    public static byte[] readBytes(File file) throws IOException {
-        byte[] bytes = new byte[(int) file.length()];
-        FileInputStream fileInputStream = new FileInputStream(file);
-        DataInputStream dis = new DataInputStream(fileInputStream);
-        try {
-            dis.readFully(bytes);
-            InputStream temp = dis;
-            dis = null;
-            temp.close();
-        } finally {
-            if (dis != null) {
-                try {
-                    dis.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return bytes;
-    }
 }

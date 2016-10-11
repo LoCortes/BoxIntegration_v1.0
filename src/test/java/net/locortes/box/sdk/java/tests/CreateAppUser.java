@@ -4,6 +4,9 @@ import com.box.sdk.*;
 import net.locortes.box.sdk.java.BOXConnectionHelper;
 import net.locortes.box.sdk.java.helper.ApplicationKeyID;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+
 /**
  * Created by VICENC.CORTESOLEA on 08/09/2016.
  */
@@ -32,10 +35,17 @@ public class CreateAppUser {
      * @param args
      */
     public void main(String[] args){
-        BOXConnectionHelper boxConnectionHelper = new BOXConnectionHelper(ApplicationKeyID.getConfigKey());
-        BoxAPIConnection api = boxConnectionHelper.getEnterpriseConnection();
+        BOXConnectionHelper boxConnectionHelper = null;
+        try {
+            boxConnectionHelper = new BOXConnectionHelper(ApplicationKeyID.getConfigKey());
+            BoxAPIConnection api = boxConnectionHelper.getEnterpriseConnection();
 
-        CreateAppUser create = new CreateAppUser();
-        create.createUser(api, "APP_USER_NAME");
+            CreateAppUser create = new CreateAppUser();
+            create.createUser(api, "APP_USER_NAME");
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

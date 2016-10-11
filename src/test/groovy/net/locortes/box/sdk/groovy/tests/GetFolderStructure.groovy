@@ -29,25 +29,25 @@ def api = boxConnectionHelper.getUserConnection()
 //Obtaining root folder. This returns the folder with ID 0. All users root folder ID is 0.
 BoxFolder root = BoxFolder.getRootFolder(api)
 
-println("="*30)
+println("=" * 30)
 println("Root folder ID: ${root.getID()}")
 printTree(root.getChildren(), 1)
-println("="*30)
+println("=" * 30)
 
 /**
  * Recursive method to print the existing folder structure
  * @param tree
  * @param level
  */
-private void printTree(Iterable<BoxItem.Info> tree, int level){
+private void printTree(Iterable<BoxItem.Info> tree, int level) {
     tree.each { BoxItem.Info item ->
-        if(item instanceof BoxFolder.Info) {
+        if (item instanceof BoxFolder.Info) {
             BoxFolder childFolder = (BoxFolder) item.getResource();
             int size = childFolder.getChildren().size()
-            println("${"\t"*level} ${size>0 ? "+" : "-"} Folder ID ${item.getID()}")
-            if(size>0) printTree(childFolder.getChildren(), (level + 1))
-        }else{
-            println("${"\t"*level} · Document ID ${item.getID()}")
+            println("${"\t" * level} ${size > 0 ? "+" : "-"} Folder ID ${item.getID()}")
+            if (size > 0) printTree(childFolder.getChildren(), (level + 1))
+        } else {
+            println("${"\t" * level} · Document ID ${item.getID()}")
         }
     }
 }

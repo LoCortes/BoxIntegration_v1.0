@@ -13,6 +13,7 @@ dependencies {
     compile 'com.box:box-java-sdk:2.1.1'
     compile group: 'org.codehaus.groovy.modules.http-builder', name: 'http-builder', version: '0.7.1'
     compile "com.mashape.unirest:unirest-java:1.4.6"
+    compile group: 'com.google.code.gson', name: 'gson', version: '2.7'
 }
 
 task wrapper(type: Wrapper) {

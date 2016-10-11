@@ -1,7 +1,6 @@
 package net.locortes.box.sdk.java.helper;
 
-import java.io.File;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -20,5 +19,33 @@ public class ResourcesHelper {
     public static InputStream getResource(String name){
         ClassLoader loader = ResourcesHelper.class.getClassLoader();
         return loader.getResourceAsStream(name);
+    }
+
+    /**
+     * Method to read bytes
+     *
+     * @param file
+     * @return
+     * @throws IOException
+     */
+    public static byte[] readBytes(File file) throws IOException {
+        byte[] bytes = new byte[(int) file.length()];
+        FileInputStream fileInputStream = new FileInputStream(file);
+        DataInputStream dis = new DataInputStream(fileInputStream);
+        try {
+            dis.readFully(bytes);
+            InputStream temp = dis;
+            dis = null;
+            temp.close();
+        } finally {
+            if (dis != null) {
+                try {
+                    dis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return bytes;
     }
 }
