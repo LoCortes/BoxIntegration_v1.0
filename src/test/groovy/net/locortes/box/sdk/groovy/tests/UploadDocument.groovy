@@ -43,7 +43,7 @@ println("Folder with ID ${folderInfo.getID()} has been created")
 def formatter = new DecimalFormat("###,##0.00")
 BoxFolder folder = folderInfo.getResource()
 BoxFile.Info fileInfo = folder.uploadFile([
-        content : ResourcesHelper.getResource("Test Document 1.docx"),
+        content : ResourcesHelper.getResource("documents/Test Document 1.docx"),
         name    : "My_test_file-${System.currentTimeMillis()}.docx",
         created : new Date() - 10,
         size    : new File(ResourcesHelper.getURI("Test Document 1.docx")).size(),
