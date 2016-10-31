@@ -5,7 +5,9 @@ import com.google.gson.GsonBuilder
 import com.mashape.unirest.http.Unirest
 import net.locortes.box.java.sdk.helper.ApplicationKeyID
 import net.locortes.box.java.sdk.helper.ResourcesHelper
-import net.locortes.box.groovy.unirest.metadata.Metadata
+import net.locortes.box.java.unirest.BOXConnection
+import net.locortes.box.java.unirest.BOXConnectionHelper
+import net.locortes.box.java.unirest.metadata.Metadata
 import org.apache.http.HttpHost
 import org.json.JSONObject
 
