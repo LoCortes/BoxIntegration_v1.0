@@ -1,4 +1,4 @@
-package net.locortes.box.java.unirest;
+package net.locortes.box.groovy.unirest;
 
 import com.google.gson.Gson;
 import com.mashape.unirest.http.HttpResponse;
@@ -7,7 +7,7 @@ import com.mashape.unirest.http.Unirest;
 import groovy.util.ConfigObject;
 import groovy.util.ConfigSlurper;
 import net.locortes.box.java.sdk.helper.ResourcesHelper;
-import net.locortes.box.java.unirest.helper.RSAKeyReader;
+import net.locortes.box.groovy.unirest.helper.RSAKeyReader;
 import org.apache.http.HttpStatus;
 import org.jose4j.jws.AlgorithmIdentifiers;
 import org.jose4j.jws.JsonWebSignature;

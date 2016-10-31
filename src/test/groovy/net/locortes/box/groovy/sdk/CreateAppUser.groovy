@@ -24,7 +24,7 @@ System.setProperty("https.proxyHost", config.proxy.host)
 System.setProperty("https.proxyPort", config.proxy.port)
 
 //DEFINE HERE THE NAME OF THE APPLICATION USER TO BE CREATED
-def name = "USER NAME TO BE CREATED"
+def name = "ZBOX Mexico App User Reader"
 
 //Class that only contains a static method that returns the ID of the configuration to be used
 //The key only identifies which set or properties will be taken to connect to BOX.
@@ -63,8 +63,7 @@ IAccessTokenCache accessTokenCache = new InMemoryLRUAccessTokenCache(MAX_CACHE_E
 
 /*
     OBTAINING CONNECTION TO THE BOX REPOSITORY
-    To make this work I needed to downloed the "Java Cryptography Extension (JCE) Unlimited Strength Jurisdiction Policy Files <jre_version>"
-    and add the jars in the jvm on the following path jre/lib/security
+    To make this work I needed to downloed the "Java Cryptography Extension (JCE) Unlimited Strength Jurisdiction Policy Files <jre_version>" and add the jars in the jvm
  */
 println "Performing connection trough the JAVA API..."
 BoxDeveloperEditionAPIConnection api =

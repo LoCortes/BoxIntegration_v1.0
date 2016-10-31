@@ -1,4 +1,4 @@
-package net.locortes.box.java.unirest.metadata;
+package net.locortes.box.groovy.unirest.metadata;
 
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;

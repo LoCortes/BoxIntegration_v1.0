@@ -1,4 +1,4 @@
-package net.locortes.box.java.unirest.helper;
+package net.locortes.box.groovy.unirest.helper;
 
 import net.locortes.box.java.sdk.helper.ResourcesHelper;
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
