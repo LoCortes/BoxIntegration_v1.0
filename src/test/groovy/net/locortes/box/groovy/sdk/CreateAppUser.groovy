@@ -24,7 +24,7 @@ System.setProperty("https.proxyHost", config.proxy.host)
 System.setProperty("https.proxyPort", config.proxy.port)
 
 //DEFINE HERE THE NAME OF THE APPLICATION USER TO BE CREATED
-def name = "ZBOX Mexico App User Reader"
+def name = "New ZBOX Mexico SIT App User Full"
 
 //Class that only contains a static method that returns the ID of the configuration to be used
 //The key only identifies which set or properties will be taken to connect to BOX.

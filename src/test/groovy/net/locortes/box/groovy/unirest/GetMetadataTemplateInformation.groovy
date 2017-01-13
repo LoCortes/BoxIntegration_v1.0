@@ -5,8 +5,11 @@ import com.google.gson.GsonBuilder
 import com.mashape.unirest.http.Unirest
 import net.locortes.box.java.sdk.helper.ApplicationKeyID
 import net.locortes.box.java.sdk.helper.ResourcesHelper
-import net.locortes.box.groovy.unirest.metadata.Metadata
+import net.locortes.box.java.unirest.BOXConnection
+import net.locortes.box.java.unirest.BOXConnectionHelper
+import net.locortes.box.java.unirest.metadata.Metadata
 import org.apache.http.HttpHost
+import org.json.JSONArray
 import org.json.JSONObject
 
 /**
@@ -34,13 +37,29 @@ Metadata metadata = new Metadata()
 //Retrieving all the templates available
 println "*"*30
 JSONObject body = metadata.getMetadataTemplates(boxconnection.access_token)
-Gson gson = new GsonBuilder().setPrettyPrinting().create()
-String json = gson.toJson(body)
-println json
+//Gson gson = new GsonBuilder().setPrettyPrinting().create()
+//String json = gson.toJson(body)
+//println json
+
+TreeMap<String, String> map = new TreeMap<String, String>();
+
+test = (JSONArray)body.get("entries")
+for(int i=0; i<test.length(); i++){
+    JSONObject obj = (JSONObject)test.get(i)
+    map.put(obj.get("displayName"), obj.get("templateKey"))
+}
+
+for(Map.Entry<String,String> entry : map.entrySet()) {
+    println "${entry.getValue().padLeft(30)} ... ${entry.getKey()}"
+}
+
+
 
 //Retrieving a specific template
+/*
 println "*"*30
-body = metadata.getMetadataTemplateDefinition(boxconnection.access_token, "claim")
+body = metadata.getMetadataTemplateDefinition(boxconnection.access_token, "siniestro")
 gson = new GsonBuilder().setPrettyPrinting().create()
 json = gson.toJson(body)
 println json
+*/

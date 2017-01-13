@@ -1,4 +1,4 @@
-package net.locortes.box.groovy.unirest.folder;
+package net.locortes.box.java.unirest.folder;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;

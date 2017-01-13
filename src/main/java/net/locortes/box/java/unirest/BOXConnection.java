@@ -1,4 +1,4 @@
-package net.locortes.box.groovy.unirest;
+package net.locortes.box.java.unirest;
 
 /**
  * Created by VICENC.CORTESOLEA on 10/10/2016.

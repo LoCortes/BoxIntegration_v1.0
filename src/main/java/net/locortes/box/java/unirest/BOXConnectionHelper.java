@@ -1,4 +1,4 @@
-package net.locortes.box.groovy.unirest;
+package net.locortes.box.java.unirest;
 
 import com.google.gson.Gson;
 import com.mashape.unirest.http.HttpResponse;
@@ -7,7 +7,7 @@ import com.mashape.unirest.http.Unirest;
 import groovy.util.ConfigObject;
 import groovy.util.ConfigSlurper;
 import net.locortes.box.java.sdk.helper.ResourcesHelper;
-import net.locortes.box.groovy.unirest.helper.RSAKeyReader;
+import net.locortes.box.java.unirest.helper.RSAKeyReader;
 import org.apache.http.HttpStatus;
 import org.jose4j.jws.AlgorithmIdentifiers;
 import org.jose4j.jws.JsonWebSignature;
@@ -141,7 +141,7 @@ public class BOXConnectionHelper {
     private BOXConnection authenticate(String user, String subType) throws Exception {
         Map<String, String> properties = new HashMap<String, String>();
         properties.put("box_sub_type", subType);
-        String jwtPayload = generateJwtPayload(CLIENT_ID, user, properties);
+            String jwtPayload = generateJwtPayload(CLIENT_ID, user, properties);
 
         HttpResponse<JsonNode> jsonResponse = Unirest.post(oauth2_url)
                 .header("Content-Type", "application/x-www-form-urlencoded")

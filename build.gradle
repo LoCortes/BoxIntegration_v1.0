@@ -2,6 +2,9 @@ apply plugin: 'groovy'
 
 repositories {
     jcenter()
+    flatDir {
+        dirs 'lib'
+    }
 }
 
 ext {
