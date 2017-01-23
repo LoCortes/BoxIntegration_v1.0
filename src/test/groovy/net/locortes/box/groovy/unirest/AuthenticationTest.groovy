@@ -5,8 +5,6 @@ import net.locortes.box.java.sdk.helper.ApplicationKeyID
 import net.locortes.box.java.sdk.helper.ResourcesHelper
 import net.locortes.box.java.unirest.BOXConnection
 import net.locortes.box.java.unirest.BOXConnectionHelper
-import net.locortes.box.java.unirest.document.DocumentManager
-import net.locortes.box.java.unirest.folder.FolderManager
 import org.apache.http.HttpHost
 
 /**

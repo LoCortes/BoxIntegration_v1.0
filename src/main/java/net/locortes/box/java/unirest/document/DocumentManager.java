@@ -1,11 +1,8 @@
 package net.locortes.box.java.unirest.document;
 
-import com.google.gson.Gson;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
-import com.mashape.unirest.http.exceptions.UnirestException;
-import net.locortes.box.java.unirest.folder.Folder;
 import org.apache.http.HttpStatus;
 import org.json.JSONObject;
 

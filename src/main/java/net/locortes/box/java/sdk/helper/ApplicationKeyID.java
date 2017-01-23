@@ -5,7 +5,7 @@ package net.locortes.box.java.sdk.helper;
  */
 public class ApplicationKeyID {
 
-    private final static String configKey = "zurichDevECMToken";
+    private final static String configKey = "zurichDevECM";
     public static String getConfigKey(){
         return configKey;
     }
