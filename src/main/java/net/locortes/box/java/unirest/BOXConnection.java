@@ -48,4 +48,9 @@ public class BOXConnection {
     public void setRefresh_token(String refresh_token) {
         this.refresh_token = refresh_token;
     }
+
+    @Override
+    public String toString() {
+        return "Access Token: " + getAccess_token() + "\nExpires in: " + getExpires_in() + "\nToken type: " + getToken_type() + "\nRefresh Token: " + getRefresh_token();
+    }
 }

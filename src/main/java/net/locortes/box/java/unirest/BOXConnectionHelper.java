@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import groovy.util.ConfigObject;
 import groovy.util.ConfigSlurper;
 import net.locortes.box.java.sdk.helper.ResourcesHelper;
@@ -18,6 +19,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.security.PrivateKey;
 import java.util.HashMap;
 import java.util.Map;
@@ -141,10 +143,13 @@ public class BOXConnectionHelper {
     private BOXConnection authenticate(String user, String subType) throws Exception {
         Map<String, String> properties = new HashMap<String, String>();
         properties.put("box_sub_type", subType);
-            String jwtPayload = generateJwtPayload(CLIENT_ID, user, properties);
+
+        String jwtPayload = generateJwtPayload(CLIENT_ID, user, properties);
 
         HttpResponse<JsonNode> jsonResponse = Unirest.post(oauth2_url)
                 .header("Content-Type", "application/x-www-form-urlencoded")
+                .header("Accept-Encoding", "gzip")
+                .header("Accept-Charset", "utf-8")
                 .field("grant_type", "urn:ietf:params:oauth:grant-type:jwt-bearer")
                 .field("client_id", CLIENT_ID)
                 .field("client_secret", CLIENT_SECRET)

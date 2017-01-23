@@ -1,19 +1,16 @@
-package net.locortes.box.groovy.unirest
+package net.locortes.box.groovy.sdk
 
+import com.box.sdk.BoxAPIConnection
 import com.mashape.unirest.http.Unirest
+import net.locortes.box.java.sdk.BOXConnectionHelper
 import net.locortes.box.java.sdk.helper.ApplicationKeyID
 import net.locortes.box.java.sdk.helper.ResourcesHelper
-import net.locortes.box.java.unirest.BOXConnection
-import net.locortes.box.java.unirest.BOXConnectionHelper
-import net.locortes.box.java.unirest.document.DocumentManager
-import net.locortes.box.java.unirest.folder.FolderManager
 import org.apache.http.HttpHost
 
 /**
- * Created by VICENC.CORTESOLEA on 14/09/2016.
- *
+ * Created by vicenc.cortesolea on 17/01/2017.
+ * This script tests the Authentication using the JAVA SDK for BOX.
  */
-
 def config = new ConfigSlurper().parse(ResourcesHelper.getURI("config.groovy").toURL())
 
 //PROXY ISSUES
@@ -27,9 +24,11 @@ Unirest.setProxy(new HttpHost(config.proxy.host, Integer.parseInt(config.proxy.p
 //The key only identifies which set or properties will be taken to connect to BOX.
 def key = ApplicationKeyID.getConfigKey()
 
-BOXConnectionHelper connectionHelper = new BOXConnectionHelper(key)
-BOXConnection connectionEnterprise = connectionHelper.authenticateEnterprise()
-println(connectionEnterprise.getAccess_token())
+BOXConnectionHelper helper = new BOXConnectionHelper(key)
+BoxAPIConnection apiEnterprise = helper.getEnterpriseConnection()
+println(apiEnterprise.getAccessToken())
 
-BOXConnection connectionUser = connectionHelper.authenticateUser()
-println(connectionUser.getAccess_token())
+BoxAPIConnection apiUser = helper.getUserConnection()
+println(apiUser.getAccessToken())
+
+println(apiUser.getTokenURL())
