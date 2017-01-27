@@ -32,7 +32,7 @@ def boxConnectionHelper = new BOXConnectionHelper(key)
 def api = boxConnectionHelper.getUserConnection()
 
 //Obtaining folder to act as root
-BoxFolder root = new BoxFolder(api, "11784623590")
+BoxFolder root = new BoxFolder(api, "0")
 
 //Creating a folder for testing purposes
 BoxFolder.Info folderInfo = root.createFolder("Test Folder ${System.currentTimeMillis()}")
@@ -43,8 +43,8 @@ def formatter = new DecimalFormat("###,##0.00")
 BoxFolder folder = folderInfo.getResource()
 BoxFile.Info fileInfo = folder.uploadFile([
         content : ResourcesHelper.getResource("documents/Test Document 1.docx"),
-        name    : "My_test_file-${System.currentTimeMillis()}.docx",
-        created : new Date() - 10,
+        name    : "My_test_file-${System.currentTimeMillis()}.docx"
+        ,created : new Date() - 10,
         size    : new File(ResourcesHelper.getURI("documents/Test Document 1.docx")).size(),
         listener: { numBytes, totalBytes ->
             println "Uploading... ${formatter.format(numBytes / 1024)} KB out of: " +

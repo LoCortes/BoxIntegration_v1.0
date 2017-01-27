@@ -1,15 +1,15 @@
-package net.locortes.box.groovy.unirest
+package net.locortes.box.groovy.sdk
 
+import com.box.sdk.BoxAPIConnection
+import com.box.sdk.BoxUser
 import com.mashape.unirest.http.Unirest
+import net.locortes.box.java.sdk.BOXConnectionHelper
 import net.locortes.box.java.sdk.helper.ApplicationKeyID
 import net.locortes.box.java.sdk.helper.ResourcesHelper
-import net.locortes.box.java.unirest.BOXConnection
-import net.locortes.box.java.unirest.BOXConnectionHelper
 import org.apache.http.HttpHost
 
 /**
- * Created by VICENC.CORTESOLEA on 14/09/2016.
- *
+ * Created by vicenc.cortesolea on 24/01/2017.
  */
 
 def config = new ConfigSlurper().parse(ResourcesHelper.getURI("config.groovy").toURL())
@@ -29,16 +29,27 @@ println("*" * 30 )
 println("START" )
 println("*" * 30 )
 
-BOXConnectionHelper connectionHelper = new BOXConnectionHelper(key)
-BOXConnection connectionEnterprise = connectionHelper.authenticateEnterprise()
-println(connectionEnterprise.getAccess_token())
 
-BOXConnection connectionUser = connectionHelper.authenticateUser()
-println(connectionUser.getAccess_token())
+//Getting the connection to BOX
+def boxConnectionHelper = new BOXConnectionHelper(key)
+    def api = boxConnectionHelper.getUserConnection()
+
+BoxUser currentUser = BoxUser.getCurrentUser(api)
+BoxUser.Info currentUserInfo = currentUser.getInfo()
+println("Current User with ID: ${currentUserInfo.ID}, name: ${currentUserInfo.name} and mail: ${currentUserInfo.login}")
+
+println("")
+
+Iterable<BoxUser.Info> users = BoxUser.getAllEnterpriseUsers(api);
+users.each {BoxUser.Info userInfo->
+    println("User with ID: ${userInfo.ID}, name: ${userInfo.name} and mail: ${userInfo.login}")
+}
+
+println("")
 
 
 
-println(connectionHelper.getFileToken(connectionUser.getAccess_token()))
 println("*" * 30 )
 println("END" )
 println("*" * 30 )
+

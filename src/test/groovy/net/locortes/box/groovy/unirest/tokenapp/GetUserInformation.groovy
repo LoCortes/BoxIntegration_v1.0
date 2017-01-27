@@ -1,15 +1,16 @@
-package net.locortes.box.groovy.unirest
+package net.locortes.box.groovy.unirest.tokenapp
 
 import com.mashape.unirest.http.Unirest
 import net.locortes.box.java.sdk.helper.ApplicationKeyID
 import net.locortes.box.java.sdk.helper.ResourcesHelper
 import net.locortes.box.java.unirest.BOXConnection
-import net.locortes.box.java.unirest.BOXConnectionHelper
+import net.locortes.box.java.unirest.BOXTokenConnectionHelper
+import net.locortes.box.java.unirest.user.User
+import net.locortes.box.java.unirest.user.UserManager
 import org.apache.http.HttpHost
 
 /**
- * Created by VICENC.CORTESOLEA on 14/09/2016.
- *
+ * Created by vicenc.cortesolea on 24/01/2017.
  */
 
 def config = new ConfigSlurper().parse(ResourcesHelper.getURI("config.groovy").toURL())
@@ -29,16 +30,14 @@ println("*" * 30 )
 println("START" )
 println("*" * 30 )
 
-BOXConnectionHelper connectionHelper = new BOXConnectionHelper(key)
-BOXConnection connectionEnterprise = connectionHelper.authenticateEnterprise()
-println(connectionEnterprise.getAccess_token())
+BOXTokenConnectionHelper helper = new BOXTokenConnectionHelper(key)
+BOXConnection apiEnterprise = helper.getFileTokenPrimary()
+println(apiEnterprise.getAccess_token())
 
-BOXConnection connectionUser = connectionHelper.authenticateUser()
-println(connectionUser.getAccess_token())
-
+User currentUser = UserManager.getCurrentUserInformation(apiEnterprise.getAccess_token())
 
 
-println(connectionHelper.getFileToken(connectionUser.getAccess_token()))
 println("*" * 30 )
 println("END" )
 println("*" * 30 )
+

@@ -5,6 +5,7 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import com.mashape.unirest.request.body.MultipartBody;
 import groovy.util.ConfigObject;
 import groovy.util.ConfigSlurper;
 import net.locortes.box.java.sdk.helper.ResourcesHelper;
@@ -161,6 +162,35 @@ public class BOXConnectionHelper {
         } else
             throw new Exception("Error managing authentication with code " + jsonResponse.getStatus()
                     + " and message " + jsonResponse.getStatusText());
+    }
+
+    /**
+     * https://docs.box.com/docs/getting-started-with-new-box-view
+     * @param accessToken
+     * @return
+     * @throws Exception
+     */
+    public BOXConnection getFileToken(String accessToken) throws Exception {
+        MultipartBody requestWithBody = Unirest.post(oauth2_url)
+                .header("Accept-Encoding", "gzip")
+                .header("Accept-Charset", "utf-8")
+                .header("Content-Type", "application/x-www-form-urlencoded")
+                .field("subject_token", URLEncoder.encode(accessToken, "UTF-8"))
+                .field("subject_token_type", "urn:ietf:params:oauth:token-type:access_token")
+                //.field("scope", URLEncoder.encode("item_preview", "UTF-8"))
+                .field("grant_type", "urn:ietf:params:oauth:grant-type:token-exchange");
+
+//        if(fileID != null)
+//            requestWithBody.field("resource", "https://api.box.com/2.0/files/" + fileID);
+
+        HttpResponse<JsonNode> jsonResponse = requestWithBody.asJson();
+
+        if (jsonResponse.getStatus() == HttpStatus.SC_OK) {
+            JSONObject body = jsonResponse.getBody().getObject();
+            return new Gson().fromJson(String.valueOf(body), BOXConnection.class);
+        } else
+            throw new Exception("Error managing authentication with code " + jsonResponse.getStatus()
+                    + " and message " + jsonResponse.getStatusText() + " and body " + jsonResponse.getBody());
     }
 
     int getExpires_in() {

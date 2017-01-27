@@ -9,12 +9,14 @@ public class BOXConnection {
     int expires_in;
     String token_type;
     String refresh_token;
+    Object restricted_to;
 
-    public BOXConnection(String access_token, int expires_in, String token_type, String refresh_token) {
+    public BOXConnection(String access_token, int expires_in, String token_type, String refresh_token, Object restricted_to) {
         this.access_token = access_token;
         this.expires_in = expires_in;
         this.token_type = token_type;
         this.refresh_token = refresh_token;
+        this.restricted_to = restricted_to;
     }
 
     public String getAccess_token() {
@@ -49,8 +51,21 @@ public class BOXConnection {
         this.refresh_token = refresh_token;
     }
 
+    public Object getRestricted_to() {
+        return restricted_to;
+    }
+
+    public void setRestricted_to(Object restricted_to) {
+        this.restricted_to = restricted_to;
+    }
+
     @Override
     public String toString() {
-        return "Access Token: " + getAccess_token() + "\nExpires in: " + getExpires_in() + "\nToken type: " + getToken_type() + "\nRefresh Token: " + getRefresh_token();
+        return "Access Token: " + getAccess_token()
+                + "\nExpires in: " + getExpires_in()
+                + "\nToken type: " + getToken_type()
+                + "\nRefresh Token: " + getRefresh_token()
+                + "\nRestricted to: " + getRestricted_to()
+        ;
     }
 }

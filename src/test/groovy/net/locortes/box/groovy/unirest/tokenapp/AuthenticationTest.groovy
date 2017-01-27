@@ -1,15 +1,14 @@
-package net.locortes.box.groovy.unirest
+package net.locortes.box.groovy.unirest.tokenapp
 
 import com.mashape.unirest.http.Unirest
 import net.locortes.box.java.sdk.helper.ApplicationKeyID
 import net.locortes.box.java.sdk.helper.ResourcesHelper
 import net.locortes.box.java.unirest.BOXConnection
-import net.locortes.box.java.unirest.BOXConnectionHelper
+import net.locortes.box.java.unirest.BOXTokenConnectionHelper
 import org.apache.http.HttpHost
 
 /**
- * Created by VICENC.CORTESOLEA on 14/09/2016.
- *
+ * Created by vicenc.cortesolea on 24/01/2017.
  */
 
 def config = new ConfigSlurper().parse(ResourcesHelper.getURI("config.groovy").toURL())
@@ -25,20 +24,9 @@ Unirest.setProxy(new HttpHost(config.proxy.host, Integer.parseInt(config.proxy.p
 //The key only identifies which set or properties will be taken to connect to BOX.
 def key = ApplicationKeyID.getConfigKey()
 
-println("*" * 30 )
-println("START" )
-println("*" * 30 )
+BOXTokenConnectionHelper helper = new BOXTokenConnectionHelper(key)
+helper.setScope(BOXTokenConnectionHelper.SCOPE_PREVIEW)
 
-BOXConnectionHelper connectionHelper = new BOXConnectionHelper(key)
-BOXConnection connectionEnterprise = connectionHelper.authenticateEnterprise()
-println(connectionEnterprise.getAccess_token())
+BOXConnection apiEnterprise = helper.getFileTokenPrimary()
+println(apiEnterprise)
 
-BOXConnection connectionUser = connectionHelper.authenticateUser()
-println(connectionUser.getAccess_token())
-
-
-
-println(connectionHelper.getFileToken(connectionUser.getAccess_token()))
-println("*" * 30 )
-println("END" )
-println("*" * 30 )
