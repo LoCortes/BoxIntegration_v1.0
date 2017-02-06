@@ -66,7 +66,7 @@ metadata.add("/policynumber", "0123456789")
 
 BoxFile file = fileInfo.getResource()
 file.createMetadata("/claim", metadata)
-println("Metadata updated.")
+println("MetadataManager updated.")
 
 //Obtaining the metadata just created on json format
 metadata = file.getMetadata("/claim")

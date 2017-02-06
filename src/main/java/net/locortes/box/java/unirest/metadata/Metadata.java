@@ -1,54 +1,167 @@
 package net.locortes.box.java.unirest.metadata;
 
-import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.Unirest;
-import org.apache.http.HttpStatus;
-import org.json.JSONObject;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Created by VICENC.CORTESOLEA on 10/10/2016.
- *
+ * Created by vicenc.cortesolea on 31/01/2017.
  */
 public class Metadata {
-    private final String metadata_template_url = "https://api.box.com/2.0/metadata_templates/enterprise/";
-    private final String metadata_template_schema_url = "https://api.box.com/2.0/metadata_templates/enterprise/%s/schema";
+    private String templateKey;
+    private String displayName;
+    private String scope = "enterprise";
+    private boolean hidden;
+    private List<Field> fields;
 
-    /**
-     *
-     * @param token
-     * @param metadataTemplate
-     * @return
-     * @throws Exception
-     */
-    public JSONObject getMetadataTemplateDefinition(String token, String metadataTemplate) throws Exception {
-        String url = String.format(metadata_template_schema_url, metadataTemplate);
-        HttpResponse<JsonNode> jsonResponse = Unirest.get(url)
-                .header("Authorization", "Bearer " + token).asJson();
-
-        if (jsonResponse.getStatus() == HttpStatus.SC_OK) {
-            JSONObject body = jsonResponse.getBody().getObject();
-            return body;
-        } else
-            throw new Exception("Error managing authentication with code " + jsonResponse.getStatus()
-                    + " and message " + jsonResponse.getStatusText());
+    public Metadata(String templateKey, String displayName, boolean hidden) {
+        this.templateKey = templateKey;
+        this.displayName = displayName;
+        this.hidden = hidden;
+        fields = new ArrayList<Field>();
     }
 
-    /**
-     *
-     * @param token
-     * @return
-     * @throws Exception
-     */
-    public JSONObject getMetadataTemplates(String token) throws Exception {
-        HttpResponse<JsonNode> jsonResponse = Unirest.get(metadata_template_url)
-                .header("Authorization", "Bearer " + token).asJson();
+    public String getScope() {
+        return scope;
+    }
 
-        if (jsonResponse.getStatus() == HttpStatus.SC_OK) {
-            JSONObject body = jsonResponse.getBody().getObject();
-            return body;
-        } else
-            throw new Exception("Error managing authentication with code " + jsonResponse.getStatus()
-                    + " and message " + jsonResponse.getStatusText());
+    public void setScope(String scope) {
+        this.scope = scope;
+    }
+
+    public boolean isHidden() {
+        return hidden;
+    }
+
+    public void setHidden(boolean hidden) {
+        this.hidden = hidden;
+    }
+
+    public String getTemplateKey() {
+        return templateKey;
+    }
+
+    public void setTemplateKey(String templateKey) {
+        this.templateKey = templateKey;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public class Field{
+        private String key;
+        private String type;
+        private String displayName;
+        private boolean hidden;
+        private List<Options> options;
+
+        public Field(String key, String type, String displayName, boolean hidden, List<Options> options) {
+            this.key = key;
+            this.type = type;
+            this.displayName = displayName;
+            this.options = options;
+            this.hidden = hidden;
+        }
+
+        public boolean isHidden() {
+            return hidden;
+        }
+
+        public void setHidden(boolean hidden) {
+            this.hidden = hidden;
+        }
+
+        public String getKey() {
+            return key;
+        }
+
+        public void setKey(String key) {
+            this.key = key;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
+
+        public String getDisplayName() {
+            return displayName;
+        }
+
+        public void setDisplayName(String displayName) {
+            this.displayName = displayName;
+        }
+
+        public List<Options> getOptions() {
+            return options;
+        }
+
+        public void setOptions(List<Options> options) {
+            this.options = options;
+        }
+
+        @Override
+        public String toString() {
+            return "Field{" +
+                    "key='" + key + '\'' +
+                    ", type='" + type + '\'' +
+                    ", displayName='" + displayName + '\'' +
+                    ", options=" + options +
+                    '}';
+        }
+
+        private class Options{
+            private String key;
+
+            public Options(String key) {
+                this.key = key;
+            }
+
+            public String getKey() {
+                return key;
+            }
+
+            public void setKey(String key) {
+                this.key = key;
+            }
+
+            @Override
+            public String toString() {
+                return key;
+            }
+        }
+    }
+
+    public void addField(Field field){
+        fields.add(field);
+    }
+
+    public List<Field> getFields() {
+        return fields;
+    }
+
+    public void setFields(List<Field> fields) {
+        this.fields = fields;
+    }
+
+    @Override
+    public String toString() {
+        return "Metadata{" +
+                "templateKey='" + templateKey + '\'' +
+                ", displayName='" + displayName + '\'' +
+                ", scope='" + scope + '\'' +
+                ", fields=" + fields +
+                '}';
     }
 }
+

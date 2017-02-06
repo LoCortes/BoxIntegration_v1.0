@@ -6,7 +6,7 @@ package net.locortes.box.java.sdk.helper;
 public class ApplicationKeyID {
 
     //Change the position to apply a Key
-    private final static int position = 4;
+    private final static int position = 0;
     private final static String[] configKey =
             {
                     "zurichDevECM",         //0
