@@ -1,15 +1,25 @@
-package net.locortes.box.groovy.sdk
+package net.locortes.box.groovy.unirest
 
-import com.box.sdk.BoxAPIConnection
-import com.box.sdk.BoxUser
+import com.box.sdk.BoxFile
+import com.box.sdk.BoxFolder
+import com.box.sdk.FileUploadParams
+import com.box.sdk.Metadata
+import com.box.sdk.ProgressListener
 import com.mashape.unirest.http.Unirest
 import net.locortes.box.java.sdk.BOXConnectionHelper
 import net.locortes.box.java.sdk.helper.ApplicationKeyID
 import net.locortes.box.java.sdk.helper.ResourcesHelper
+import net.locortes.box.java.unirest.BOXTokenConnectionHelper
+import net.locortes.box.java.unirest.document.DocumentManager
+import net.locortes.box.java.unirest.folder.Folder
+import net.locortes.box.java.unirest.folder.FolderManager
 import org.apache.http.HttpHost
 
+import java.awt.Desktop
+import java.text.DecimalFormat
+
 /**
- * Created by vicenc.cortesolea on 24/01/2017.
+ * Created by vicenc.cortesolea on 05/10/2016.
  */
 
 def config = new ConfigSlurper().parse(ResourcesHelper.getURI("config.groovy").toURL())
@@ -29,28 +39,18 @@ println("*" * 30 )
 println("START" )
 println("*" * 30 )
 
-
 //Getting the connection to BOX
 def boxConnectionHelper = new BOXConnectionHelper(key)
-//def api = boxConnectionHelper.getUserConnection()
-def api = boxConnectionHelper.getEnterpriseConnection()
+def boxConnection = boxConnectionHelper.getUserConnection()
 
-BoxUser currentUser = BoxUser.getCurrentUser(api)
-BoxUser.Info currentUserInfo = currentUser.getInfo()
-println("Current User with ID: ${currentUserInfo.ID}, name: ${currentUserInfo.name} and mail: ${currentUserInfo.login}")
+//Obtaining folder to act as root
+Folder root = FolderManager.getFolderInformation(boxConnection.getAccessToken(), "18785003678")
 
-println("")
-
-Iterable<BoxUser.Info> users = BoxUser.getAllEnterpriseUsers(api);
-users.each {BoxUser.Info userInfo->
-    println("User with ID: ${userInfo.ID}, name: ${userInfo.name} and mail: ${userInfo.login}")
-}
-
-println("")
-
+def file = new File(ResourcesHelper.getURI("documents/Test Document 1.docx"))
+def documentId = DocumentManager.upload(boxConnection.getAccessToken(), root.getId(), file, "Test Document 1 - ${System.currentTimeMillis()}.doc")
+println("Documet uploaded with ID: $documentId")
 
 
 println("*" * 30 )
 println("END" )
 println("*" * 30 )
-
