@@ -2,6 +2,8 @@ package net.locortes.box.java.unirest.metadata;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +15,7 @@ public class Metadata {
     private String templateKey;
     private String displayName;
     private String scope = "enterprise";
-    private boolean hidden;
+    private boolean hidden = false;
     private List<Field> fields;
 
     public Metadata(String templateKey, String displayName, boolean hidden) {
@@ -163,5 +165,6 @@ public class Metadata {
                 ", fields=" + fields +
                 '}';
     }
+
 }
 
